@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\LoginController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +22,14 @@ use App\Http\Controllers\Api\UserController;
 // });
 
 Route::apiResource('users', UserController::class);
+//Route::resource('login', LoginController::class);
+Route::post('login', function () {
+    return view('login');
+});
+Route::get('index', function () {
+    return view('index');
+});
+Route::get('users', function () {
+    $users = User::all();
+    return view('users', ['users' => $users]);
+});

@@ -16,6 +16,7 @@ class UserController extends Controller {
      */
     public function index() {
         $users = User::all();
+        //return view('users', $users);
         return response()->json([
             'status' => true,
             'users' => $users
@@ -44,12 +45,7 @@ class UserController extends Controller {
         $user->type = $request->input('type');
         $user->save();
 
-
-        return response()->json([
-            'status' => true,
-            'message' => "User Created successfully!",
-            'post' => $user
-        ], 200);
+        return redirect('/api/index', 200);
     }
 
     /**
