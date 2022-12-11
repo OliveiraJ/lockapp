@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller {
     /**
@@ -45,7 +46,7 @@ class UserController extends Controller {
         $user->type = $request->input('type');
         $user->save();
 
-        return redirect('/api/index', 200);
+        return redirect('/api/index');
     }
 
     /**
@@ -101,5 +102,30 @@ class UserController extends Controller {
             'status' => true,
             'message' => "User Deleted successfully!",
         ], 200);
+    }
+
+    public function actionVerifyUser(Request $request) {
+        $data = ['id' => $request->input('id'), 'password' => $request->input('password')];
+        $user = DB::table('users')->where('id', $data['id'])->first();
+
+        if (empty($user)) {
+            return response()->json([
+                'message' => "User not found"
+            ], 404);
+        } else {
+            if (Hash::check($data['password'], $user->password)) {
+                return response()->json([
+                    'massage' => "User verified",
+                    'match' => true,
+                    'userType' => $user->type,
+                    'userName' => $user->name
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => "Passwords dont match",
+                    'match' => false
+                ], 200);
+            }
+        }
     }
 }

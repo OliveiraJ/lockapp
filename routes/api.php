@@ -22,10 +22,7 @@ use App\Models\User;
 // });
 
 Route::apiResource('users', UserController::class);
-//Route::resource('login', LoginController::class);
-Route::post('login', function () {
-    return view('login');
-});
+
 Route::get('index', function () {
     return view('index');
 });
@@ -33,3 +30,4 @@ Route::get('users', function () {
     $users = User::all();
     return view('users', ['users' => $users]);
 });
+Route::post('/users/verifyUser', [UserController::class, 'actionVerifyUser']);
