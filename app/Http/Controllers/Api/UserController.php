@@ -110,12 +110,15 @@ class UserController extends Controller {
 
         if (empty($user)) {
             return response()->json([
-                'message' => "User not found"
+                'message' => "User not found",
+                'match' => false,
+                'userType' => "",
+                'userName' => ""
             ], 404);
         } else {
             if (Hash::check($data['password'], $user->password)) {
                 return response()->json([
-                    'massage' => "User verified",
+                    'message' => "User verified",
                     'match' => true,
                     'userType' => $user->type,
                     'userName' => $user->name
